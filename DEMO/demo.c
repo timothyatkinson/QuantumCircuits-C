@@ -1,5 +1,5 @@
-#include "q_circuit.h"
-#include "predefined_q.h"
+#include "../q_circuit.h"
+#include "../predefined_q.h"
 #include "time.h"
 
 int main (void)
@@ -96,5 +96,25 @@ int main (void)
   printf("Swap3\n");
   q_op_print(swap);
   q_op_free(swap);
+
+    q_state* z2 = q_rand();
+    q_state_print(z2);
+      q_state* z3 = q_rand();
+      q_state_print(z3);
+    q_state* o2 = q_one();
+  q_state* z4 = q_zero();
+    q_state_print(o2);
+    s2 = q_state_tensor(z2, o2);
+    q_state_print(s2);
+    s3 = q_state_tensor(z3, o2);
+    q_state_print(s3);
+    printf("s2, s3: %lf\n", fidelity(s2, s3));
+    printf("s2, s3: %lf\n", fidelity(s3, s2));
+    printf("s2, s2: %lf\n", fidelity(s2, s2));
+    printf("s3, s3: %lf\n", fidelity(s3, s3));
+    q_state* s4 = q_state_tensor(o2, o2);
+    q_state* s5 = q_state_tensor(o2, z4);
+    printf("s4, s5: %lf\n", fidelity(s4, s5));
+
 
 }

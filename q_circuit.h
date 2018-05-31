@@ -15,6 +15,12 @@ typedef struct q_state{
   int qubits;
 } q_state;
 
+typedef struct q_state_distribution{
+  int s;
+  q_state** states;
+  double* probabilities;
+} q_state_distribution;
+
 /**g_state_alloc
   *Allocates a q_state struct.
     *qubits. The number of qubits of the q_state.
@@ -34,6 +40,13 @@ q_state* q_state_calloc(int qubits);
     *state. The state to free.
 */
 void q_state_free(q_state* state);
+
+/*q_complex_conjugate
+  *Computes the complex conjugate of a q state.
+    *q. The state to compute the complex conjugate of.
+  *Returns new, the complex conjugate of q.
+*/
+q_state* q_complex_conjugate(q_state* q);
 
 /**q_state_print
   *Prints a q_state.
@@ -91,4 +104,47 @@ q_state* q_state_tensor(q_state* a, q_state* b);
 */
 q_op* q_op_tensor(q_op* a, q_op* b);
 
+/**g_state_distribution_alloc
+  *Allocates a q_state distribution struct.
+    *s. The number of states of the q_state_distribution.
+  Returns the empty state distribution "dist".
+*/
+q_state_distribution* q_state_distribution_alloc(int qubits);
+
+
+/**q_state_distribution_free
+  *Frees a given q_state_distribution.
+    *dist. The distribution to free.
+*/
+void q_state_distribution_free(q_state_distribution* dist);
+
+/**q_state_distribution_lazy_free
+  *Frees a given q_state_distribution, does not free individual qPstates.
+    *dist. The distribution to free.
+*/
+void q_state_distribution_lazy_free(q_state_distribution* dist);
+
+/**q_state_measure
+  *Performs a measurement of a given qubit of a q state.
+    *q. The q_state to perform a measurement on.
+    *qubit. The qubit to measure.
+  *Returns a probability distribution over outcomes.
+*/
+q_state_distribution** q_state_measure(q_state* q, int qubit);
+
+/**q_state_measure
+  *Performs a measurement of a given qubit of a q distribution.
+    *q. The q_state_distribution to perform a measurement on.
+    *qubit. The qubit to measure.
+  *Returns a probability distribution over outcomes.
+*/
+q_state_distribution** q_distribution_measure(q_state_distribution* q, int qubit);
+
+/**fidelity
+  *Computes the fidelity between 2 states.
+    *a. The first q_state.
+    *b. The second q_state.
+  *Returns fid, the fidelity
+*/
+double fidelity(q_state* a, q_state* b);
 #endif

@@ -34,6 +34,21 @@ void q_state_free(q_state* state){
   free(state);
 }
 
+/*q_complex_conjugate
+  *Computes the complex conjugate of a q state.
+    *q. The state to compute the complex conjugate of.
+  *Returns new, the complex conjugate of q.
+*/
+q_state* q_complex_conjugate(q_state* q){
+  q_state* new = q_state_calloc(q->qubits);
+  for(int i = 0; i < (int)pow(2, q->qubits); i++){
+    gsl_complex o;
+    GSL_SET_COMPLEX(&o, GSL_REAL(gsl_matrix_complex_get(q->vector, i, 0)), -GSL_IMAG(gsl_matrix_complex_get(q->vector, i, 0)));
+    gsl_matrix_complex_set(new->vector, i, 0, o);
+  }
+  return new;
+}
+
 /**q_state_print
   *Prints a q_state.
     *state. The state to print.
@@ -175,4 +190,83 @@ q_op* q_op_tensor(q_op* a, q_op* b){
     }
   }
   return new_op;
+}
+
+/**g_state_distribution_alloc
+  *Allocates a q_state distribution struct.
+    *s. The number of states of the q_state_distribution.
+  Returns the empty state distribution "dist".
+*/
+q_state_distribution* q_state_distribution_alloc(int s){
+  q_state_distribution* dist = malloc(sizeof(q_state_distribution));
+  dist->s = s;
+  dist->states = malloc(s * sizeof(q_state));
+  dist->probabilities = malloc(s * sizeof(double));
+  return dist;
+}
+
+/**q_state_distribution_free
+  *Frees a given q_state_distribution.
+    *dist. The distribution to free.
+*/
+void q_state_distribution_free(q_state_distribution* dist){
+  for(int i = 0; i < dist->s; i++){
+    q_state_free(dist->states[i]);
+  }
+  free(dist->states);
+  free(dist->probabilities);
+  free(dist);
+}
+
+/**q_state_distribution_lazy_free
+  *Frees a given q_state_distribution, does not free individual q_states.
+    *dist. The distribution to free.
+*/
+void q_state_distribution_lazy_free(q_state_distribution* dist){
+  free(dist->states);
+  free(dist->probabilities);
+  free(dist);
+}
+
+/**q_state_measure
+  *Performs a measurement of a given qubit of a q state.
+    *q. The q_state to perform a measurement on.
+    *qubit. The qubit to measure.
+  *A probability distribution over outcomes.
+*/
+q_state_distribution** q_state_measure(q_state* q, int qubit){
+  int flips_at = (int)pow(2, qubit-1);
+  int zero = 1;
+  double z_prob = 0.0;
+  double o_prob = 0.0;
+  return NULL;
+}
+
+/**q_state_measure
+  *Performs a measurement of a given qubit of a q distribution.
+    *q. The q_state_distribution to perform a measurement on.
+    *qubit. The qubit to measure.
+  *A probability distribution over outcomes.
+*/
+q_state_distribution** q_distribution_measure(q_state_distribution* q, int qubit){
+  return NULL;
+}
+
+/**fidelity
+  *Computes the fidelity between 2 states.
+    *a. The first q_state.
+    *b. The second q_state.
+  *Returns fid, the fidelity
+*/
+double fidelity(q_state* a, q_state* b){
+  q_state* bt = q_complex_conjugate(b);
+  gsl_complex sum;
+  GSL_SET_COMPLEX(&sum, 0.0, 0.0);
+  for(int i = 0; i < (int)pow(2, a->qubits); i++){
+    gsl_complex ac = gsl_matrix_complex_get(a->vector, i, 0);
+    gsl_complex bc = gsl_matrix_complex_get(bt->vector, i, 0);
+    sum = gsl_complex_add(sum, gsl_complex_mul(ac, bc));
+  }
+  double fid = gsl_complex_abs(sum);
+  return fid;
 }
