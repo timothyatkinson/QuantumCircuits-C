@@ -104,6 +104,14 @@ q_state* q_state_tensor(q_state* a, q_state* b);
 */
 q_op* q_op_tensor(q_op* a, q_op* b);
 
+/**q_op_multiply
+  *Performs the matrix multiplication operation on quantum operators a and b. Neither a nor b is destroyed and both must be freed by the user.
+    *a. The first q_op.
+    *b. The second q_op.
+  *Returns a.b "new_op".
+*/
+q_op* q_op_multiply(q_op* a, q_op* b);
+
 /**g_state_distribution_alloc
   *Allocates a q_state distribution struct.
     *s. The number of states of the q_state_distribution.
