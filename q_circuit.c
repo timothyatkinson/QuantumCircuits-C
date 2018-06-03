@@ -192,6 +192,24 @@ q_op* q_op_tensor(q_op* a, q_op* b){
   return new_op;
 }
 
+/**q_op_multiply
+  *Performs the matrix multiplication operation on quantum operators a and b. Neither a nor b is destroyed and both must be freed by the user.
+    *a. The first q_op.
+    *b. The second q_op.
+  *Returns a.b "new_op".
+*/
+q_op* q_op_multiply(q_op* a, q_op* b){
+  if(op->qubits != b->qubits){
+    printf("Error: size mismatch in operator application. Terminating.\n");
+    exit(0);
+  }
+  q_op* new_op = q_op_alloc(b->qubits);
+
+  gsl_blas_zgemm(CblasNoTrans, CblasNoTrans, GSL_COMPLEX_ONE, a->matrix, b->matrix, GSL_COMPLEX_ZERO, new_op->matrix);
+
+  return new_op;
+}
+
 /**g_state_distribution_alloc
   *Allocates a q_state distribution struct.
     *s. The number of states of the q_state_distribution.
