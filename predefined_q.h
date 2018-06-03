@@ -18,4 +18,9 @@ q_op* q_rot_z(double p);
 q_op* q_crot_z(double p);
 q_op* q_swap(int qubits, int* map);
 
+/**rand_double - RAND DOUBLE
+  *Computes a random double between 0 and 1 using C's inbuilt RNG
+*/
+double rand_double();
+gsl_complex e_i_pi(double p);
 #endif

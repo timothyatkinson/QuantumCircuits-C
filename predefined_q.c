@@ -1,9 +1,5 @@
 #include "predefined_q.h"
 
-/**rand_double - RAND DOUBLE
-  *Computes a random double between 0 and 1 using C's inbuilt RNG
-*/
-double rand_double();
 
 /**rand_double - RAND double
   *Computes a random double between 0 and 1 using C's inbuilt RNG
@@ -12,7 +8,6 @@ double rand_double(){
   return (double)rand() / (double)RAND_MAX;
 }
 
-gsl_complex e_i_pi(double p);
 gsl_complex e_i_pi(double p){
   gsl_complex ret;
   GSL_SET_COMPLEX(&ret, cos(p), sin(p));
