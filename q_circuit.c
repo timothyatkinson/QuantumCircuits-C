@@ -199,7 +199,7 @@ q_op* q_op_tensor(q_op* a, q_op* b){
   *Returns a.b "new_op".
 */
 q_op* q_op_multiply(q_op* a, q_op* b){
-  if(op->qubits != b->qubits){
+  if(a->qubits != b->qubits){
     printf("Error: size mismatch in operator application. Terminating.\n");
     exit(0);
   }
