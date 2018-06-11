@@ -176,3 +176,25 @@ q_op* q_swap(int qubits, int* map){
   }
   return op;
 }
+
+q_op* q_s(){
+  q_op* op = q_op_calloc(1);
+  gsl_complex o;
+  gsl_complex i;
+  GSL_SET_COMPLEX(&o, 1.0, 0.0);
+  GSL_SET_COMPLEX(&i, 0.0, 1.0);
+  gsl_matrix_complex_set(op->matrix, 0, 0, o);
+  gsl_matrix_complex_set(op->matrix, 1, 1, i);
+  return op;
+}
+
+q_op* q_t(){
+  q_op* op = q_op_calloc(1);
+  gsl_complex o;
+  gsl_complex i;
+  GSL_SET_COMPLEX(&o, 1.0, 0.0);
+  GSL_SET_COMPLEX(&i, 1.0 / sqrt(2), 1.0 / sqrt(2));
+  gsl_matrix_complex_set(op->matrix, 0, 0, o);
+  gsl_matrix_complex_set(op->matrix, 1, 1, i);
+  return op;
+}

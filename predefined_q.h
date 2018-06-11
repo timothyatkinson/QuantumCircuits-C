@@ -23,4 +23,7 @@ q_op* q_swap(int qubits, int* map);
 */
 double rand_double();
 gsl_complex e_i_pi(double p);
+
+q_op* q_s();
+q_op* q_t();
 #endif
