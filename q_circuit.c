@@ -286,5 +286,6 @@ double fidelity(q_state* a, q_state* b){
     sum = gsl_complex_add(sum, gsl_complex_mul(ac, bc));
   }
   double fid = gsl_complex_abs(sum);
+  q_state_free(bt);
   return fid;
 }
