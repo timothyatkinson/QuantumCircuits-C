@@ -41,6 +41,13 @@ q_state* q_state_calloc(int qubits);
 */
 void q_state_free(q_state* state);
 
+
+/**q_state_normalize
+  *Normalizes a given q_state
+    *state. The state to normalize.
+*/
+void q_state_normalize(q_state* state);
+
 /*q_complex_conjugate
   *Computes the complex conjugate of a q state.
     *q. The state to compute the complex conjugate of.

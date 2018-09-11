@@ -34,6 +34,21 @@ void q_state_free(q_state* state){
   free(state);
 }
 
+/**q_state_normalize
+  *Normalizes a given q_state
+    *state. The state to normalize.
+*/
+void q_state_normalize(q_state* state){
+  int num = pow(2, state->qubits);
+  double dsum = 0.0;
+  for(int i = 0; i < num; i++){
+    dsum += (gsl_complex_abs(gsl_matrix_complex_get(state->vector, i, 0)) * gsl_complex_abs(gsl_matrix_complex_get(state->vector, i, 0)));
+  }
+  gsl_complex sum;
+  GSL_SET_COMPLEX(&sum, 1.0/dsum, 0);
+  gsl_matrix_complex_scale(state->vector, sum);
+}
+
 /*q_complex_conjugate
   *Computes the complex conjugate of a q state.
     *q. The state to compute the complex conjugate of.
