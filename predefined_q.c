@@ -199,6 +199,17 @@ q_op* q_t(){
   return op;
 }
 
+q_op* q_td() {
+    q_op* op = q_op_calloc(1);
+    gsl_complex x;
+    gsl_complex y;
+    GSL_SET_COMPLEX(&x, 1.0, 0.0);
+    GSL_SET_COMPLEX(&y, 1.0 / sqrt(2), -1.0 / sqrt(2));
+    gsl_matrix_complex_set(op->matrix, 0, 0, x);
+    gsl_matrix_complex_set(op->matrix, 1, 1, y);
+    return op;
+}
+
 q_op* q_ct(){
   q_op* op = q_op_calloc(2);
   gsl_complex o;

@@ -26,6 +26,7 @@ gsl_complex e_i_pi(double p);
 
 q_op* q_s();
 q_op* q_t();
+q_op* q_td();
 q_op* q_ct();
 q_op* r_x(double angle);
 q_op* r_y(double angle);
