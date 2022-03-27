@@ -281,3 +281,14 @@ q_op* q_g() {
     gsl_matrix_complex_set(op->matrix, 1, 1, x);
     return op;
 }
+
+q_op* q_gd() {
+    q_op* op = q_op_calloc(1);
+    gsl_complex x, y, z;
+    _q_g_util(&x, &y, &z);
+    gsl_matrix_complex_set(op->matrix, 0, 0, x);
+    gsl_matrix_complex_set(op->matrix, 0, 1, y);
+    gsl_matrix_complex_set(op->matrix, 1, 0, z);
+    gsl_matrix_complex_set(op->matrix, 1, 1, x);
+    return op;
+}
