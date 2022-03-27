@@ -264,12 +264,17 @@ q_op* r_z(double angle){
   return op;
 }
 
+static void _q_g_util(gsl_complex* x, gsl_complex* y, gsl_complex* z) {
+    GSL_SET_COMPLEX(x, cos(M_PI/8), 0.0);
+    GSL_SET_COMPLEX(y, sin(M_PI/8), 0.0);
+    GSL_SET_COMPLEX(z, -sin(M_PI/8), 0.0);
+    return;
+}
+
 q_op* q_g() {
     q_op* op = q_op_calloc(1);
     gsl_complex x, y, z;
-    GSL_SET_COMPLEX(&x, cos(M_PI/8), 0.0);
-    GSL_SET_COMPLEX(&y, sin(M_PI/8), 0.0);
-    GSL_SET_COMPLEX(&z, -sin(M_PI/8), 0.0);
+    _q_g_util(&x, &y, &z);
     gsl_matrix_complex_set(op->matrix, 0, 0, x);
     gsl_matrix_complex_set(op->matrix, 0, 1, z);
     gsl_matrix_complex_set(op->matrix, 1, 0, y);
