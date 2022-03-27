@@ -257,10 +257,22 @@ q_op* r_y(double angle){
   return op;
 }
 
-
 q_op* r_z(double angle){
   q_op* op = q_op_calloc(1);
   gsl_matrix_complex_set(op->matrix, 0, 0, e_i_pi(-angle/2.0));
   gsl_matrix_complex_set(op->matrix, 1, 1, e_i_pi(angle/2.0));
   return op;
+}
+
+q_op* q_g() {
+    q_op* op = q_op_calloc(1);
+    gsl_complex x, y, z;
+    GSL_SET_COMPLEX(&x, cos(M_PI/8), 0.0);
+    GSL_SET_COMPLEX(&y, sin(M_PI/8), 0.0);
+    GSL_SET_COMPLEX(&z, -sin(M_PI/8), 0.0);
+    gsl_matrix_complex_set(op->matrix, 0, 0, x);
+    gsl_matrix_complex_set(op->matrix, 0, 1, z);
+    gsl_matrix_complex_set(op->matrix, 1, 0, y);
+    gsl_matrix_complex_set(op->matrix, 1, 1, x);
+    return op;
 }
