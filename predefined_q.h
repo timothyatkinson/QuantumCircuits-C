@@ -33,4 +33,5 @@ q_op* r_y(double angle);
 q_op* r_z(double angle);
 q_op* q_g();
 q_op* q_gd();
+q_op* q_v();
 #endif
