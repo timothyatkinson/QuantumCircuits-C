@@ -321,6 +321,19 @@ q_op* q_vd() {
     return op;
 }
 
+q_op* q_cvd() {
+    q_op* op = q_op_calloc(2);
+    gsl_complex x, y;
+    _q_v_util(&x, &y);
+    gsl_matrix_complex_set(op->matrix, 0, 0, GSL_COMPLEX_ONE);
+    gsl_matrix_complex_set(op->matrix, 1, 1, y);
+    gsl_matrix_complex_set(op->matrix, 1, 3, x);
+    gsl_matrix_complex_set(op->matrix, 2, 2, GSL_COMPLEX_ONE);
+    gsl_matrix_complex_set(op->matrix, 3, 1, x);
+    gsl_matrix_complex_set(op->matrix, 3, 3, y);
+    return op;
+}
+
 q_op* q_toffoli() {
     q_op* op = q_op_calloc(TOFFOLI_QUBITS);
     int n2 = pow(2, TOFFOLI_QUBITS);
