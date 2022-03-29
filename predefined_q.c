@@ -334,3 +334,17 @@ q_op* q_toffoli() {
     }
     return op;
 }
+
+q_op* q_fredkin() {
+    q_op* op = q_op_calloc(FREDKIN_QUBITS);
+    int n2 = pow(2, FREDKIN_QUBITS);
+    for (int i = 0; i < n2; i++) {
+        if (i == 5)
+            gsl_matrix_complex_set(op->matrix, i, i + 1, GSL_COMPLEX_ONE);
+        else if (i == 6)
+            gsl_matrix_complex_set(op->matrix, i + 1, i, GSL_COMPLEX_ONE);
+        else
+            gsl_matrix_complex_set(op->matrix, i, i, GSL_COMPLEX_ONE);
+    }
+    return op;
+}
