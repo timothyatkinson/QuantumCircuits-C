@@ -320,3 +320,17 @@ q_op* q_vd() {
     gsl_matrix_complex_set(op->matrix, 1, 1, y);
     return op;
 }
+
+q_op* q_toffoli() {
+    q_op* op = q_op_calloc(TOFFOLI_QUBITS);
+    int n2 = pow(2, TOFFOLI_QUBITS);
+    for (int i = 0; i < n2; i++) {
+        if (i == 3)
+            gsl_matrix_complex_set(op->matrix, i, n2 - 1, GSL_COMPLEX_ONE);
+        else if (i == 7)
+            gsl_matrix_complex_set(op->matrix, i, 3, GSL_COMPLEX_ONE);
+        else
+            gsl_matrix_complex_set(op->matrix, i, i, GSL_COMPLEX_ONE);
+    }
+    return op;
+}

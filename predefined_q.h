@@ -1,5 +1,6 @@
 #ifndef PD_Q_H
 #define PD_Q_H
+#define TOFFOLI_QUBITS 3
 
 #include "q_circuit.h"
 
@@ -35,4 +36,5 @@ q_op* q_g();
 q_op* q_gd();
 q_op* q_v();
 q_op* q_vd();
+q_op* q_toffoli();
 #endif
