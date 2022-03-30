@@ -199,6 +199,17 @@ q_op* q_t(){
   return op;
 }
 
+q_op* q_td() {
+    q_op* op = q_op_calloc(1);
+    gsl_complex x;
+    gsl_complex y;
+    GSL_SET_COMPLEX(&x, 1.0, 0.0);
+    GSL_SET_COMPLEX(&y, 1.0 / sqrt(2), -1.0 / sqrt(2));
+    gsl_matrix_complex_set(op->matrix, 0, 0, x);
+    gsl_matrix_complex_set(op->matrix, 1, 1, y);
+    return op;
+}
+
 q_op* q_ct(){
   q_op* op = q_op_calloc(2);
   gsl_complex o;
@@ -246,10 +257,136 @@ q_op* r_y(double angle){
   return op;
 }
 
-
 q_op* r_z(double angle){
   q_op* op = q_op_calloc(1);
   gsl_matrix_complex_set(op->matrix, 0, 0, e_i_pi(-angle/2.0));
   gsl_matrix_complex_set(op->matrix, 1, 1, e_i_pi(angle/2.0));
   return op;
+}
+
+static void _q_g_util(gsl_complex* x, gsl_complex* y, gsl_complex* z) {
+    GSL_SET_COMPLEX(x, cos(M_PI/8), 0.0);
+    GSL_SET_COMPLEX(y, sin(M_PI/8), 0.0);
+    GSL_SET_COMPLEX(z, -sin(M_PI/8), 0.0);
+    return;
+}
+
+q_op* q_g() {
+    q_op* op = q_op_calloc(1);
+    gsl_complex x, y, z;
+    _q_g_util(&x, &y, &z);
+    gsl_matrix_complex_set(op->matrix, 0, 0, x);
+    gsl_matrix_complex_set(op->matrix, 0, 1, z);
+    gsl_matrix_complex_set(op->matrix, 1, 0, y);
+    gsl_matrix_complex_set(op->matrix, 1, 1, x);
+    return op;
+}
+
+q_op* q_gd() {
+    q_op* op = q_op_calloc(1);
+    gsl_complex x, y, z;
+    _q_g_util(&x, &y, &z);
+    gsl_matrix_complex_set(op->matrix, 0, 0, x);
+    gsl_matrix_complex_set(op->matrix, 0, 1, y);
+    gsl_matrix_complex_set(op->matrix, 1, 0, z);
+    gsl_matrix_complex_set(op->matrix, 1, 1, x);
+    return op;
+}
+
+static void _q_v_util(gsl_complex* x, gsl_complex* y) {
+    GSL_SET_COMPLEX(x, 1.0/2.0, 1.0/2.0);
+    GSL_SET_COMPLEX(y, 1.0/2.0, -1.0/2.0);
+    return;
+}
+
+q_op* q_v() {
+    q_op* op = q_op_calloc(1);
+    gsl_complex x, y;
+    _q_v_util(&x, &y);
+    gsl_matrix_complex_set(op->matrix, 0, 0, x);
+    gsl_matrix_complex_set(op->matrix, 0, 1, y);
+    gsl_matrix_complex_set(op->matrix, 1, 0, y);
+    gsl_matrix_complex_set(op->matrix, 1, 1, x);
+    return op;
+}
+
+q_op* q_cv() {
+    q_op* op = q_op_calloc(2);
+    gsl_complex x, y;
+    _q_v_util(&x, &y);
+    gsl_matrix_complex_set(op->matrix, 0, 0, GSL_COMPLEX_ONE);
+    gsl_matrix_complex_set(op->matrix, 1, 1, x);
+    gsl_matrix_complex_set(op->matrix, 1, 3, y);
+    gsl_matrix_complex_set(op->matrix, 2, 2, GSL_COMPLEX_ONE);
+    gsl_matrix_complex_set(op->matrix, 3, 1, y);
+    gsl_matrix_complex_set(op->matrix, 3, 3, x);
+    return op;
+}
+
+q_op* q_vd() {
+    q_op* op = q_op_calloc(1);
+    gsl_complex x, y;
+    _q_v_util(&x, &y);
+    gsl_matrix_complex_set(op->matrix, 0, 0, y);
+    gsl_matrix_complex_set(op->matrix, 0, 1, x);
+    gsl_matrix_complex_set(op->matrix, 1, 0, x);
+    gsl_matrix_complex_set(op->matrix, 1, 1, y);
+    return op;
+}
+
+q_op* q_cvd() {
+    q_op* op = q_op_calloc(2);
+    gsl_complex x, y;
+    _q_v_util(&x, &y);
+    gsl_matrix_complex_set(op->matrix, 0, 0, GSL_COMPLEX_ONE);
+    gsl_matrix_complex_set(op->matrix, 1, 1, y);
+    gsl_matrix_complex_set(op->matrix, 1, 3, x);
+    gsl_matrix_complex_set(op->matrix, 2, 2, GSL_COMPLEX_ONE);
+    gsl_matrix_complex_set(op->matrix, 3, 1, x);
+    gsl_matrix_complex_set(op->matrix, 3, 3, y);
+    return op;
+}
+
+q_op* q_toffoli() {
+    q_op* op = q_op_calloc(TOFFOLI_QUBITS);
+    int n2 = pow(2, TOFFOLI_QUBITS);
+    for (int i = 0; i < n2; i++) {
+        if (i == 3)
+            gsl_matrix_complex_set(op->matrix, i, n2 - 1, GSL_COMPLEX_ONE);
+        else if (i == 7)
+            gsl_matrix_complex_set(op->matrix, i, 3, GSL_COMPLEX_ONE);
+        else
+            gsl_matrix_complex_set(op->matrix, i, i, GSL_COMPLEX_ONE);
+    }
+    return op;
+}
+
+q_op* q_fredkin() {
+    q_op* op = q_op_calloc(FREDKIN_QUBITS);
+    int n2 = pow(2, FREDKIN_QUBITS);
+    for (int i = 0; i < n2; i++) {
+        if (i == 5)
+            gsl_matrix_complex_set(op->matrix, i, i + 1, GSL_COMPLEX_ONE);
+        else if (i == 6)
+            gsl_matrix_complex_set(op->matrix, i + 1, i, GSL_COMPLEX_ONE);
+        else
+            gsl_matrix_complex_set(op->matrix, i, i, GSL_COMPLEX_ONE);
+    }
+    return op;
+}
+
+q_op* q_margolus() {
+    q_op* op = q_op_calloc(MARGOLUS_QUBITS);
+    int n2 = pow(2, MARGOLUS_QUBITS);
+    for (int i = 0; i < n2; i++) {
+        if (i == 3)
+            gsl_matrix_complex_set(op->matrix, i, n2 - 1, GSL_COMPLEX_ONE);
+        else if (i == 5)
+            gsl_matrix_complex_set(op->matrix, i, i, GSL_COMPLEX_NEGONE);
+        else if (i == 7)
+            gsl_matrix_complex_set(op->matrix, i, 3, GSL_COMPLEX_ONE);
+        else
+            gsl_matrix_complex_set(op->matrix, i, i, GSL_COMPLEX_ONE);
+    }
+    return op;
 }

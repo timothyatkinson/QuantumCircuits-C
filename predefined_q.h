@@ -1,5 +1,8 @@
 #ifndef PD_Q_H
 #define PD_Q_H
+#define TOFFOLI_QUBITS 3
+#define FREDKIN_QUBITS 3
+#define MARGOLUS_QUBITS 3
 
 #include "q_circuit.h"
 
@@ -26,8 +29,18 @@ gsl_complex e_i_pi(double p);
 
 q_op* q_s();
 q_op* q_t();
+q_op* q_td();
 q_op* q_ct();
 q_op* r_x(double angle);
 q_op* r_y(double angle);
 q_op* r_z(double angle);
+q_op* q_g();
+q_op* q_gd();
+q_op* q_v();
+q_op* q_cv();
+q_op* q_vd();
+q_op* q_cvd();
+q_op* q_toffoli();
+q_op* q_fredkin();
+q_op* q_margolus();
 #endif
